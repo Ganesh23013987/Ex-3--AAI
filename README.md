@@ -36,15 +36,13 @@
 
 ## Program:
 ```
-!pip install pgmpy
-!pip install networkx
-from pgmpy.models import BayesianNetwork
+from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from pgmpy.sampling import GibbsSampling
 import networkx as nx
 import matplotlib.pyplot as plt
 
-alarm_model = BayesianNetwork(
+alarm_model = DiscreteBayesianNetwork(
     [
         ("Burglary", "Alarm"),
         ("Earthquake", "Alarm"),
@@ -108,17 +106,19 @@ pos={
     'MaryCalls':(2,-4)
     }
 
-nx.draw(G,pos,with_labels=True,node_size=1500,node_color="skyblue",font_size=10,
-                     font_weight="bold",arrowsize=20)
+nx.draw(G,pos,with_labels=True,node_size=1500,node_color="skyblue",font_size=10,font_weight="bold",arrowsize=20)
 plt.title("Bayesian Network: Burglar Alarm Problem")
 plt.show()
 
 gibbssampler=GibbsSampling(alarm_model)
+
 num_samples=10000
+
 samples=gibbssampler.sample(size=num_samples)
 
 query_variable="Burglary"
 query_result=samples[query_variable].value_counts(normalize=True)
+
 print("\n Approximate probabilities of {}:".format(query_variable))
 print(query_result)
 ```
